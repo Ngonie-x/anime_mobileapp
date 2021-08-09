@@ -1,0 +1,84 @@
+# main.kv
+
+ScreenManagement:
+    MainWindow:
+    AddUrlScreen:
+
+# Main screen
+
+<MainWindow>:
+    name: 'mainscreen'
+    #toolbar
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDToolbar:
+            pos_hint: {'top': 1}
+            title: 'Anime Update'
+            right_action_items: [["link-variant-plus", lambda x:app.open_settings_screen()]] # opens setting window
+
+        MDScrollViewRefreshLayout:
+            id: refresh_layout
+            refresh_callback: root.refresh_callback
+            root_layout: root
+
+            MDGridLayout:
+                id: box
+                adaptive_height: True
+                cols: 1
+
+
+                    
+
+
+         
+
+<AddUrlScreen>:
+    name: 'addurl'
+    id: addurl
+
+    # toolbar
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDToolbar:
+            pos_hint: {'top': 1}
+            title: 'Settings'
+            left_action_items: [["keyboard-backspace", lambda x: app.return_to_main_window()]]
+        
+
+        MDFloatLayout:
+            size_hint: 1, .9
+            id: linkscreen
+
+
+            MDTextField:
+                id: linkinput
+                size_hint: .8, None
+                pos_hint: {'center_x': .5, 'y': .9}
+                hint_text: 'Add Url'
+                mode: 'rectangle'
+                text_validate_unfocus: False
+                on_text_validate: root.add_url(linkinput.text)
+
+            ScrollView:
+                md_bg_color: app.theme_cls.primary_color
+                pos_hint: {'center_x': .5, 'y': .1}
+                size_hint: .9, .8
+
+                MDList:
+                    id: linklist
+
+
+<CustomListItem>:
+
+    IconLeftWidget:
+        icon: "web"
+
+
+    IconRightWidget:
+        icon: "trash-can"
+        theme_text_color: "Custom"
+        text_color: 1, 0, 0, 1
+
+        on_release: root.delete_item(root.text)
