@@ -1,11 +1,23 @@
 # scrap.py
 
-import os
-from bs4 import BeautifulSoup
+import os,sys
 import requests
 import shelve
+# class ImportFixer(object):
+#     def __init__(self, mname):
+#         self.mname = mname
 
-path = os.getcwd()
+#     def find_module(self, name, path=None):
+#         if name == self.mname:
+#             return self
+#         return None
+
+#     def load_module(self, name):
+#         import _htmlparser as module
+#         module.__name__ = name
+#         return module
+# sys.meta_path = [ImportFixer('bs4.builder._htmlparser')]
+from bs4 import BeautifulSoup
 
 
 
@@ -37,12 +49,6 @@ def download_details(soup_text):
     # print('Ongoing', ongoing)
 
 
-    try:
-        os.mkdir('images')
-        os.mkdir('save_files')
-    except:
-        pass
-
    
 
 
@@ -61,7 +67,7 @@ def download_details(soup_text):
 
 
     ## Save details to shelve file
-    with shelve.open(f'{path}/save_files/mydata') as shelf_file:
+    with shelve.open(f'./save_files/mydata') as shelf_file:
 
         file_name = os.path.basename(image_url)
 
@@ -75,7 +81,7 @@ def download_details(soup_text):
     
 
     # save the image
-    if os.path.exists(f'{path}/images/{file_name}') != True:
+    if os.path.exists(f'./images/{file_name}') != True:
         image_file = open(os.path.join('images', file_name), 'wb')
         for chuck in image.iter_content(100000):
             image_file.write(chuck)
